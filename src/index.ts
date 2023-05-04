@@ -5,7 +5,7 @@ import session from 'express-session';
 import connectSqlite3 from 'connect-sqlite3';
 
 //Controller imports
-import { registerUser, logIn } from './controllers/userController';
+import { registerUser, logIn, createAdmin, adminControl } from './controllers/userController';
 
 const app: Express = express();
 const { PORT, COOKIE_SECRET } = process.env;
@@ -29,9 +29,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public', { extensions: ['html'] }));
 app.set('view engine', 'ejs');
 
+//Account set up links
 app.post('/register', registerUser);
 app.post('/login', logIn);
+app.post('/createAdmin', createAdmin);
+app.post('/adminStatus', adminControl);
+
+//Student Addition Setup
 
 app.listen(PORT, () => {
-    console.log(`Listening at http://localhost:${PORT}`);
+  console.log(`Listening at http://localhost:${PORT}`);
 });
