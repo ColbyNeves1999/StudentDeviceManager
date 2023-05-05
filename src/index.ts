@@ -6,6 +6,7 @@ import connectSqlite3 from 'connect-sqlite3';
 
 //Controller imports
 import { registerUser, logIn, createAdmin, adminControl } from './controllers/userController';
+import { googleAuthorization, callBack } from './controllers/googleAuthController';
 
 const app: Express = express();
 const { PORT, COOKIE_SECRET } = process.env;
@@ -34,6 +35,8 @@ app.post('/register', registerUser);
 app.post('/login', logIn);
 app.post('/createAdmin', createAdmin);
 app.post('/adminStatus', adminControl);
+app.get('/googleAuth', googleAuthorization);
+app.get('/callBack', callBack);
 
 //Student Addition Setup
 

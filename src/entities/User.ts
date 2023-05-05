@@ -15,4 +15,10 @@ export class User {
     @Column({ default: false })
     admin: boolean;
 
+    @Column({ default: null })
+    authCode: string;
+
+    @Column({ default: null })
+    refreshCode: string;
+
 }
