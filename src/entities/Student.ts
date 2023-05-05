@@ -7,12 +7,22 @@ export class Student {
     userId: string;
 
     @Column({ unique: true })
+    studentID: string;
+
+    @Column({ default: null })
     name: string;
 
-    @Column({ unique: true, default: "" })
-    computerNumber: string;
+    @Column({ default: null })
+    grade: string;
 
     @Column({ unique: true })
-    studentID: string;
+    email: string;
+
+    @Column({ unique: true })
+    password: string;
+
+
+    @Column({ default: null, unique: true })
+    computerNumber: string;
 
 }

@@ -8,6 +8,7 @@ import connectSqlite3 from 'connect-sqlite3';
 import { registerUser, logIn, createAdmin, adminControl } from './controllers/userController';
 import { googleAuthorization, callBack } from './controllers/googleAuthController';
 import { grabSheet } from './controllers/googleSheetController';
+import { studentDeviceCheckout } from './controllers/studentController';
 
 const app: Express = express();
 const { PORT, COOKIE_SECRET } = process.env;
@@ -41,6 +42,7 @@ app.get('/callBack', callBack);
 
 //Student Addition Setup
 app.get('/grabSheet', grabSheet);
+app.post('/setDevice', studentDeviceCheckout);
 
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);
