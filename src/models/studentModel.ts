@@ -3,7 +3,15 @@ import { Student } from '../entities/Student';
 
 const studentRepository = AppDataSource.getRepository(Student);
 
-async function addStudent(studentId: string, name: string, grade: string, email: string, password: string) {
+async function addStudent(studentId: string, name: string, grade: string, email: string, password: string): Promise<Student | null> {
+
+    const student = await getStudentBySID(studentId);
+
+    if (student) {
+
+        return null;
+
+    }
 
     // Create the new user object and saves data
     let newStudent = new Student();
@@ -27,21 +35,37 @@ async function getStudentBySID(studentID: string): Promise<Student | null> {
     return studentRepository.findOne({ where: { studentID } });
 }
 
-async function setStudentDevice(deviceNumber: string, studentID: string, email: string): Promise<void> {
+async function getStudentByName(name: string): Promise<Student | null> {
+    return studentRepository.findOne({ where: { name } });
+}
+
+async function setStudentDevice(deviceNumber: string, studentID: string, email: string, name: string): Promise<void> {
 
     let student;
-
     if (studentID) {
 
         student = await getStudentBySID(studentID);
-        student.computerNumber = deviceNumber;
-        await studentRepository.save(student);
+        if (student) {
+            student.computerNumber = deviceNumber;
+            await studentRepository.save(student);
+        }
+
+    } else if (name) {
+
+        student = await getStudentByName(name);
+        if (student) {
+            student.computerNumber = deviceNumber;
+            await studentRepository.save(student);
+        }
 
     } else if (email) {
 
         student = await getStudentByEmail(email);
-        student.computerNumber = deviceNumber;
-        await studentRepository.save(student);
+        if (student) {
+            student.computerNumber = deviceNumber;
+            await studentRepository.save(student);
+        }
+
     }
 
 }

@@ -18,15 +18,16 @@ async function grabSheet(req: Request, res: Response): Promise<void> {
     let data = await result.json();
 
     const { values } = data as studentData;
-    //console.log(values[0][0]);
 
-    for (let i = 0; i < values.length; i++) {
+    if (values) {
 
-        await addStudent(values[i][0], values[i][1], values[i][2], values[i][3], values[i][4])
+        for (let i = 0; i < values.length; i++) {
+
+            await addStudent(values[i][0], values[i][1], values[i][2], values[i][3], values[i][4])
+
+        }
 
     }
-
-    //console.log(data);
 
     res.redirect('/index');
     return;
