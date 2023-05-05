@@ -1,10 +1,14 @@
-//import { Request, Response } from 'express';
+import { Request, Response } from 'express';
 
-/*async function grabSheet(req: Request, res: Response): Promise<void> {
+const API_KEY = process.env.API_KEY;
+const range = process.env.RANGE;
+const spreadsheetId = process.env.SPREADSHEETID;
+
+async function grabSheet(req: Request, res: Response): Promise<void> {
 
 
 
-    let result = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
+    let result = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${API_KEY}&access_token=${req.session.authenticatedUser.authToken}`, {
         method: 'GET',
     });
 
@@ -14,7 +18,11 @@
 
     let data = await result.json();
 
+    console.log(data);
 
     res.sendStatus(200);
+    return;
 
-}*/
+}
+
+export { grabSheet };

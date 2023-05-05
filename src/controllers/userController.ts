@@ -17,7 +17,7 @@ async function registerUser(req: Request, res: Response): Promise<void> {
     const passwordHash = await argon2.hash(password);
 
     await addUser(email, passwordHash);
-    res.sendStatus(200);
+    res.redirect('/login');
 
 }
 
@@ -43,10 +43,12 @@ async function logIn(req: Request, res: Response): Promise<void> {
         email: user.email,
         userId: user.userId,
         isAdmin: user.admin,
+        authToken: user.authCode,
+        refreshToken: user.refreshCode,
     };
     req.session.isLoggedIn = true;
 
-    res.sendStatus(200);
+    res.redirect('/adminStatus');
     return;
 
 }
@@ -86,7 +88,7 @@ async function adminControl(req: Request, res: Response): Promise<void> {
         req.session.authenticatedUser.isAdmin = true;
     }
 
-    res.sendStatus(200);
+    res.redirect('/googleAuth');
     return;
 
 }

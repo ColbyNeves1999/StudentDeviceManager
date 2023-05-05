@@ -61,4 +61,17 @@ async function setAdminStatus(email: string): Promise<void> {
 
 }
 
-export { getUserByEmail, addUser, addAdmin, getAdmin, setAdminStatus };
+async function setUserAuth(email: string, auth: string, refresh: string): Promise<User> {
+
+    const user = await getUserByEmail(email);
+
+    user.authCode = auth;
+    user.refreshCode = refresh;
+
+    await userRepository.save(user);
+
+    return user;
+
+}
+
+export { getUserByEmail, addUser, addAdmin, getAdmin, setAdminStatus, setUserAuth };

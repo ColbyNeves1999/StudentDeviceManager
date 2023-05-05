@@ -1,14 +1,10 @@
 import { Request, Response } from 'express';
-//import { Buffer } from 'buffer';
 import querystring from 'querystring';
-//import argon2 from 'argon2';
+import { getUserByEmail, setUserAuth } from '../models/userModel';
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
-//const code_verifier = process.env.code_verifier;
-//const code_challenge = (Buffer.from(code_verifier).toString('base64'));
-//const { PORT } = process.env;
 
 async function googleAuthorization(req: Request, res: Response): Promise<void> {
 
@@ -67,11 +63,17 @@ async function callBack(req: Request, res: Response) {
 
     const resJson = await fetchResponse.json();
 
+    const { access_token, refresh_token } = resJson as userGoogleIngo;
 
+    let user = await getUserByEmail(req.session.authenticatedUser.email);
+
+    await setUserAuth(user.email, access_token, refresh_token);
+    req.session.authenticatedUser.authToken = access_token;
+    req.session.authenticatedUser.refreshToken = refresh_token;
 
     console.log(resJson);
 
-    res.sendStatus(200);
+    res.redirect('/index');
     return;
 
 }
