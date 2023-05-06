@@ -1,0 +1,5 @@
+type studentPage = {
+
+    name: string;
+
+};

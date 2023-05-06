@@ -11,6 +11,7 @@ import { googleAuthorization, callBack } from './controllers/googleAuthControlle
 import { grabSheet } from './controllers/googleSheetController';
 import { studentDeviceCheckout } from './controllers/studentController';
 import { refreshTokens } from './models/googleAuthModel';
+import { toStudentDataPage } from './controllers/pageController';
 
 const app: Express = express();
 const { PORT, COOKIE_SECRET } = process.env;
@@ -51,6 +52,9 @@ app.get('/callBack', callBack);
 //Student Addition Setup
 app.get('/grabSheet', grabSheet);
 app.post('/setDevice', studentDeviceCheckout);
+
+//Page changes
+app.post('/studentData', toStudentDataPage);
 
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);
