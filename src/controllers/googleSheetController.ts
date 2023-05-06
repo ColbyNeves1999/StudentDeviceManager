@@ -7,6 +7,13 @@ const spreadsheetId = '1RSfxLHQBe6CRDDRnYgcDF25Lbr2cfQa-YpvJAV0xHUw';
 
 async function grabSheet(req: Request, res: Response): Promise<void> {
 
+    if (!req.session.isLoggedIn || !req.session.authenticatedUser.authToken) {
+
+        res.redirect('/login');
+        return;
+
+    }
+
     let result = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${API_KEY}&access_token=${req.session.authenticatedUser.authToken}`, {
         method: 'GET',
     });

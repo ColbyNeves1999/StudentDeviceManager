@@ -28,7 +28,7 @@ async function googleAuthorization(req: Request, res: Response): Promise<void> {
 
 }
 
-async function callBack(req: Request, res: Response) {
+async function callBack(req: Request, res: Response): Promise<void> {
 
     var code = req.query.code as string || null;
 

@@ -88,9 +88,17 @@ async function adminControl(req: Request, res: Response): Promise<void> {
         req.session.authenticatedUser.isAdmin = true;
     }
 
-    res.redirect('/googleAuth');
-    return;
+    if (user.authCode) {
 
+        res.redirect('/index');
+        return;
+
+    } else {
+
+        res.redirect('/googleAuth');
+        return;
+
+    }
 }
 
 export { registerUser, logIn, createAdmin, adminControl };

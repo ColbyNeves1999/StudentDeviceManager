@@ -3,12 +3,14 @@ import 'express-async-errors';
 import express, { Express } from 'express';
 import session from 'express-session';
 import connectSqlite3 from 'connect-sqlite3';
+import { scheduleJob } from 'node-schedule';
 
 //Controller imports
 import { registerUser, logIn, createAdmin, adminControl } from './controllers/userController';
 import { googleAuthorization, callBack } from './controllers/googleAuthController';
 import { grabSheet } from './controllers/googleSheetController';
 import { studentDeviceCheckout } from './controllers/studentController';
+import { refreshTokens } from './models/googleAuthModel';
 
 const app: Express = express();
 const { PORT, COOKIE_SECRET } = process.env;
@@ -27,6 +29,12 @@ app.use(
 );
 
 app.use(express.json());
+
+function iRunEveryHour() {
+  refreshTokens();
+}
+
+scheduleJob('1 * * * *', iRunEveryHour);
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public', { extensions: ['html'] }));
