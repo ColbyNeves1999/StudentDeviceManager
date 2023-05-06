@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, Relation } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Relation } from 'typeorm';
 
 import { Notes } from './Notes';
 
@@ -8,9 +8,8 @@ export class Student {
     @PrimaryGeneratedColumn('uuid')
     userId: string;
 
-    @OneToMany(() => Notes, (note) => note.studentID)
-    @JoinColumn()
-    studentID: Relation<Notes>;
+    @Column({ unique: true })
+    studentID: string;
 
     @Column({ default: null })
     name: string;
@@ -26,5 +25,8 @@ export class Student {
 
     @Column({ default: null, unique: true })
     computerNumber: string;
+
+    @OneToMany(() => Notes, (note) => note.student, { cascade: ['insert', 'update'] })
+    note: Relation<Student>[];
 
 }
