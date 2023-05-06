@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn, Relation } from 'typeorm';
+
+import { Notes } from './Notes';
 
 @Entity()
 export class Student {
@@ -6,8 +8,9 @@ export class Student {
     @PrimaryGeneratedColumn('uuid')
     userId: string;
 
-    @Column({ unique: true })
-    studentID: string;
+    @OneToMany(() => Notes, (note) => note.studentID)
+    @JoinColumn()
+    studentID: Relation<Notes>;
 
     @Column({ default: null })
     name: string;
@@ -20,7 +23,6 @@ export class Student {
 
     @Column({ unique: true })
     password: string;
-
 
     @Column({ default: null, unique: true })
     computerNumber: string;
