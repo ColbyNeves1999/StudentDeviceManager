@@ -19,8 +19,6 @@ async function toStudentDataPage(req: Request, res: Response): Promise<void> {
         student = await getStudentByEmail(email);
     }
 
-    console.log("I'm trying here", student.note.length();
-
     res.render('studentData', { student });
 
 }

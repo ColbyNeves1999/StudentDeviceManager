@@ -27,6 +27,6 @@ export class Student {
     computerNumber: string;
 
     @OneToMany(() => Notes, (note) => note.student, { cascade: ['insert', 'update'] })
-    note: Relation<Student>[];
+    notes: Relation<Notes>[];
 
 }

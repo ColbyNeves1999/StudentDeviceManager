@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Relation, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Relation } from 'typeorm';
 
 import { Student } from './Student';
 
@@ -11,8 +11,7 @@ export class Notes {
     @Column({ unique: true })
     noteText: string;
 
-    @ManyToOne(() => Student, (student) => student, { cascade: ['insert', 'update'] })
-    @JoinColumn()
+    @ManyToOne(() => Student, (student) => student.notes, { cascade: ['insert', 'update'] })
     student: Relation<Student>;
 
 }

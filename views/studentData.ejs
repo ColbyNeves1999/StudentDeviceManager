@@ -3,11 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Question Page | AudioAdvisor</title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/style.css" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Student Data</title>
 </head>
 
 <body>
@@ -21,18 +19,17 @@
         <%= student.name %>
             <%= student.computerNumber %>
     </label>
-    <% if (student.note.length===0) { %>
-        <p>There are no notes for this student.</p>
-        <% } else { %>
-            <ul>
-                <% for( const note of student.note ) { %>
-                    <li>
-                        <p>
-                            <%= note.noteText %>
-                        </p>
-                    </li>
-                    <% } %>
-            </ul>
-            <% } %>
+    <label>
+        <ul>
+            <% for( const note of student.note ) { %>
+                <li>
+                    <p>
+                        <%= note.noteText %>
+                    </p>
+                </li>
+                <% } %>
+        </ul>
+    </label>
+
 
 </body>
