@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { getStudentByName } from '../models/studentModel';
+import { getStudentByName, getStudentBySID, getStudentByEmail } from '../models/studentModel';
 
 import { Student } from '../entities/Student';
 
 async function toStudentDataPage(req: Request, res: Response): Promise<void> {
 
-    const { name } = req.body as studentPage;
+    const { name, studentID, email } = req.body as studentPage;
 
     let student = new Student();
 
@@ -13,7 +13,13 @@ async function toStudentDataPage(req: Request, res: Response): Promise<void> {
 
         student = await getStudentByName(name);
 
+    } else if (studentID) {
+        student = await getStudentBySID(studentID);
+    } else if (email) {
+        student = await getStudentByEmail(email);
     }
+
+    console.log("I'm trying here", student.note.length();
 
     res.render('studentData', { student });
 
