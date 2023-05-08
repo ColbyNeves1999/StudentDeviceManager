@@ -21,5 +21,18 @@
         <%= student.name %>
             <%= student.computerNumber %>
     </label>
+    <% if (student.note.length===0) { %>
+        <p>There are no notes for this student.</p>
+        <% } else { %>
+            <ul>
+                <% for( const note of student.note ) { %>
+                    <li>
+                        <p>
+                            <%= note.noteText %>
+                        </p>
+                    </li>
+                    <% } %>
+            </ul>
+            <% } %>
 
 </body>

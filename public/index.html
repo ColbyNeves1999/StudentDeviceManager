@@ -29,7 +29,22 @@
 </body>
 
 <body>
+
+    <form id="makeNote" method="POST" action="/makeNote">
+        <input type="text" name="noteText" id="noteText" placeholder="Notes" required>
+        <input type="text" name="studentID" id="studentID" placeholder="Student ID">
+        <input type="text" name="name" id="name" placeholder="Student Name">
+        <input type="text" name="email" id="email" placeholder="Student Email">
+        <button>Request</button>
+    </form>
+
+</body>
+
+<body>
     <form method="POST" action="/studentData">
+        <input type="text" name="studentID" id="studentID" placeholder="Student ID">
+        <input type="text" name="name" id="name" placeholder="Student Name">
+        <input type="text" name="email" id="email" placeholder="Student Email">
         <button>Student Data</button>
     </form>
 </body>

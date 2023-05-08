@@ -70,4 +70,4 @@ async function setStudentDevice(deviceNumber: string, studentID: string, email: 
 
 }
 
-export { addStudent, setStudentDevice, getStudentByName };
+export { addStudent, setStudentDevice, getStudentByName, getStudentByEmail, getStudentBySID };
