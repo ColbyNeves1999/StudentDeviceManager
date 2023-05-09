@@ -11,6 +11,9 @@
 <body>
 
     <h1>Student Data</h1>
+    <form id="setDevice" method="GET" action="/index">
+        <button>Home</button>
+    </form>
     <form id="chooseName" method="POST" action="/studentData">
         <input type="text" name="name" id="name" placeholder="Student Name">
         <button>Request</button>
@@ -35,5 +38,16 @@
 
                 <% } %>
     </label>
+    <h3>Swap Device</h3>
+    <label>Current Device: <%= student.computerNumber %></label>
 
+    <body>
+        <form id="setDevice" method="POST" action="/setDevice">
+            <input type="text" name="deviceNumber" id="deviceNumber" placeholder="Computer Number" required>
+            <input type="text" name="studentID" id="studentID" placeholder="Student ID">
+            <input type="text" name="name" id="name" placeholder="Student Name">
+            <input type="text" name="email" id="email" placeholder="Student Email">
+            <button>Request</button>
+        </form>
+    </body>
 </body>

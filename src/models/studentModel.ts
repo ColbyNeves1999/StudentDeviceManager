@@ -28,15 +28,37 @@ async function addStudent(studentId: string, name: string, grade: string, email:
 }
 
 async function getStudentByEmail(email: string): Promise<Student | null> {
-    return studentRepository.findOne({ relations: ['notes'], where: { email } });
+    return await studentRepository.findOne({ relations: ['notes'], where: { email } });
 }
 
 async function getStudentBySID(studentID: string): Promise<Student | null> {
-    return studentRepository.findOne({ relations: ['notes'], where: { studentID } });
+    return await studentRepository.findOne({ relations: ['notes'], where: { studentID } });
 }
 
 async function getStudentByName(name: string): Promise<Student | null> {
-    return studentRepository.findOne({ relations: ['notes'], where: { name } });
+    return await studentRepository.findOne({ relations: ['notes'], where: { name } });
+}
+
+async function getStudentVariety(email: string, studentID: string, name: string): Promise<Student | null> {
+
+    let student;
+
+    if (studentID) {
+
+        student = await getStudentBySID(studentID);
+
+    } else if (name) {
+
+        student = await getStudentByName(name);
+
+    } else if (email) {
+
+        student = await getStudentByEmail(email);
+
+    }
+
+    return student;
+
 }
 
 async function setStudentDevice(deviceNumber: string, studentID: string, email: string, name: string): Promise<void> {
@@ -70,4 +92,4 @@ async function setStudentDevice(deviceNumber: string, studentID: string, email: 
 
 }
 
-export { addStudent, setStudentDevice, getStudentByName, getStudentByEmail, getStudentBySID };
+export { addStudent, setStudentDevice, getStudentByName, getStudentByEmail, getStudentBySID, getStudentVariety };

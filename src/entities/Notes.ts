@@ -9,7 +9,7 @@ export class Notes {
     @PrimaryGeneratedColumn('uuid')
     noteID: string;
 
-    @Column({ unique: true })
+    @Column({})
     noteText: string;
 
     @ManyToOne(() => User, (user) => user.notes, { cascade: ['insert', 'update'] })
