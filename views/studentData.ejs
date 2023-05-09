@@ -20,16 +20,20 @@
             <%= student.computerNumber %>
     </label>
     <label>
-        <ul>
-            <% for( const note of student.note ) { %>
-                <li>
-                    <p>
-                        <%= note.noteText %>
-                    </p>
-                </li>
-                <% } %>
-        </ul>
-    </label>
+        <% if (student.notes.length===0) { %>
+            <p>There are no reviews yet.</p>
+            <% } else { %>
+                <ul>
+                    <% for( const note of student.notes ) { %>
+                        <li>
+                            <p>
+                                <%= note.noteText %>
+                            </p>
+                        </li>
+                        <% } %>
+                </ul>
 
+                <% } %>
+    </label>
 
 </body>

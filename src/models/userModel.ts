@@ -9,6 +9,10 @@ async function getUserByEmail(email: string): Promise<User | null> {
     return userRepository.findOne({ where: { email } });
 }
 
+async function getUserByID(userId: string): Promise<User | null> {
+    return userRepository.findOne({ where: { userId } });
+}
+
 async function addUser(email: string, passwordHash: string): Promise<User> {
 
     // Create the new user object and saves data
@@ -74,4 +78,4 @@ async function setUserAuth(email: string, auth: string, refresh: string): Promis
 
 }
 
-export { getUserByEmail, addUser, addAdmin, getAdmin, setAdminStatus, setUserAuth };
+export { getUserByEmail, addUser, addAdmin, getAdmin, setAdminStatus, setUserAuth, getUserByID };

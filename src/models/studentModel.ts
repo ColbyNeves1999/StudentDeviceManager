@@ -28,15 +28,15 @@ async function addStudent(studentId: string, name: string, grade: string, email:
 }
 
 async function getStudentByEmail(email: string): Promise<Student | null> {
-    return studentRepository.findOne({ where: { email } });
+    return studentRepository.findOne({ relations: ['notes'], where: { email } });
 }
 
 async function getStudentBySID(studentID: string): Promise<Student | null> {
-    return studentRepository.findOne({ where: { studentID } });
+    return studentRepository.findOne({ relations: ['notes'], where: { studentID } });
 }
 
 async function getStudentByName(name: string): Promise<Student | null> {
-    return studentRepository.findOne({ where: { name } });
+    return studentRepository.findOne({ relations: ['notes'], where: { name } });
 }
 
 async function setStudentDevice(deviceNumber: string, studentID: string, email: string, name: string): Promise<void> {

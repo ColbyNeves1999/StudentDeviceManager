@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, Relation } from 'typeorm';
+
+import { Notes } from './Notes';
 
 @Entity()
 export class User {
@@ -20,5 +22,9 @@ export class User {
 
     @Column({ default: null })
     refreshCode: string;
+
+    @ManyToMany(() => Notes, (notes) => notes.user, { cascade: ['insert', 'update'] })
+    @JoinTable()
+    notes: Relation<Notes>[];
 
 }

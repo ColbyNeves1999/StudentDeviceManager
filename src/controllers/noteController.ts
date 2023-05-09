@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { addNote } from '../models/noteModel';
 import { getStudentByName, getStudentByEmail, getStudentBySID } from '../models/studentModel';
+import { getUserByID } from '../models/userModel';
 
 async function makeNote(req: Request, res: Response): Promise<void> {
 
@@ -12,6 +13,7 @@ async function makeNote(req: Request, res: Response): Promise<void> {
         return;
     }
 
+    const user = await getUserByID(req.session.authenticatedUser.userId);
     const { noteText } = req.body as noteOptions;
 
     let student;
@@ -26,8 +28,8 @@ async function makeNote(req: Request, res: Response): Promise<void> {
         return;
     }
 
-    const studentNote = await addNote(noteText, student);
-    studentNote.student = undefined;
+    const notes = await addNote(noteText, student, user);
+    notes.user = undefined;
 
     res.redirect('/index');
     return;
