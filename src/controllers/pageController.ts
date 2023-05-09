@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getStudentByName, getStudentBySID, getStudentByEmail } from '../models/studentModel';
+import { getStudentVariety } from '../models/studentModel';
 
 import { Student } from '../entities/Student';
 
@@ -9,15 +9,13 @@ async function toStudentDataPage(req: Request, res: Response): Promise<void> {
 
     let student = new Student();
 
-    if (name) {
+    if (name || studentID || email) {
 
-        student = await getStudentByName(name);
+        student = await getStudentVariety(email, studentID, name);
 
-    } else if (studentID) {
-        student = await getStudentBySID(studentID);
-    } else if (email) {
-        student = await getStudentByEmail(email);
     }
+
+    console.log("YUUUUP", student.computerNumber);
 
     res.render('studentData', { student });
 
