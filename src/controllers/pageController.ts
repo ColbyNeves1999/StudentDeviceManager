@@ -15,8 +15,6 @@ async function toStudentDataPage(req: Request, res: Response): Promise<void> {
 
     }
 
-    console.log("YUUUUP", student.computerNumber);
-
     res.render('studentData', { student });
 
 }

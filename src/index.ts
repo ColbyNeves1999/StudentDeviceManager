@@ -9,6 +9,7 @@ import { scheduleJob } from 'node-schedule';
 import { registerUser, logIn, createAdmin, adminControl } from './controllers/userController';
 import { googleAuthorization, callBack } from './controllers/googleAuthController';
 import { grabSheet } from './controllers/googleSheetController';
+import { grabSheetModel } from './models/googleSheetModel';
 import { studentDeviceCheckout } from './controllers/studentController';
 import { refreshTokens } from './models/googleAuthModel';
 import { toStudentDataPage } from './controllers/pageController';
@@ -33,7 +34,14 @@ app.use(
 app.use(express.json());
 
 function iRunEveryHour() {
+
+  const range = "A2:E";
+  const spreadsheetId = '1RSfxLHQBe6CRDDRnYgcDF25Lbr2cfQa-YpvJAV0xHUw';
+  const userEmail = "colby.neves@jonesboroschools.net"
+
   refreshTokens();
+  grabSheetModel(spreadsheetId, range, userEmail);
+
 }
 
 scheduleJob('1 * * * *', iRunEveryHour);
@@ -59,6 +67,7 @@ app.post('/studentData', toStudentDataPage);
 
 //Student Notes
 app.post('/makeNote', makeNote);
+app.post('/deleteNote',);
 
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);

@@ -26,7 +26,7 @@ async function studentDeviceCheckout(req: Request, res: Response) {
         checkOut = `Swapped ${student.computerNumber} with ${deviceNumber}`;
     }
 
-    await setStudentDevice(deviceNumber, studentID, email, name);
+    student = await setStudentDevice(deviceNumber, studentID, email, name);
 
     await addNote(checkOut, student, user);
 

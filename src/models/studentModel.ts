@@ -61,19 +61,15 @@ async function getStudentVariety(email: string, studentID: string, name: string)
 
 }
 
-async function setStudentDevice(deviceNumber: string, studentID: string, email: string, name: string): Promise<void> {
+async function setStudentDevice(deviceNumber: string, studentID: string, email: string, name: string): Promise<Student> {
 
-    let student;
-
-    if (email || studentID || name) {
-
-        student = await getStudentBySID(studentID);
-        if (student) {
-            student.computerNumber = deviceNumber;
-            await studentRepository.save(student);
-        }
-
+    let student = await getStudentVariety(email, studentID, name);
+    if (student) {
+        student.computerNumber = deviceNumber;
+        await studentRepository.save(student);
     }
+
+    return student;
 
 }
 
