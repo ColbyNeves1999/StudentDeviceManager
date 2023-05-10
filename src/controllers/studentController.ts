@@ -20,6 +20,15 @@ async function studentDeviceCheckout(req: Request, res: Response) {
 
     let checkOut;
 
+    if (student.computerNumber === deviceNumber) {
+
+        req.session.curStudent = student;
+
+        res.render('studentData', { student });
+        return;
+
+    }
+
     if (!student.computerNumber) {
         checkOut = `Checked out ${deviceNumber}`;
     } else {

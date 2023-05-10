@@ -39,6 +39,10 @@ async function getStudentByName(name: string): Promise<Student | null> {
     return await studentRepository.findOne({ relations: ['notes'], where: { name } });
 }
 
+async function getStudentByComputer(computerNumber: string): Promise<Student | null> {
+    return await studentRepository.findOne({ relations: ['notes'], where: { computerNumber } });
+}
+
 async function getStudentVariety(email: string, studentID: string, name: string): Promise<Student | null> {
 
     let student;
@@ -73,4 +77,4 @@ async function setStudentDevice(deviceNumber: string, studentID: string, email: 
 
 }
 
-export { addStudent, setStudentDevice, getStudentByName, getStudentByEmail, getStudentBySID, getStudentVariety };
+export { addStudent, setStudentDevice, getStudentByName, getStudentByEmail, getStudentBySID, getStudentVariety, getStudentByComputer };

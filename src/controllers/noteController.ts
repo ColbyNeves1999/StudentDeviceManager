@@ -24,7 +24,7 @@ async function makeNote(req: Request, res: Response): Promise<void> {
     } else if (email) {
         student = await getStudentByEmail(email);
     } else {
-        res.sendStatus(404);
+        res.redirect('/index');
         return;
     }
 

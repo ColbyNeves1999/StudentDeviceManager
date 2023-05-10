@@ -14,16 +14,20 @@
     <form id="setDevice" method="GET" action="/index">
         <button>Home</button>
     </form>
-    <form id="chooseName" method="POST" action="/studentData">
+    <form method="POST" action="/studentData">
         <input type="text" name="studentID" id="studentID" placeholder="Student ID">
         <input type="text" name="name" id="name" placeholder="Student Name">
         <input type="text" name="email" id="email" placeholder="Student Email">
-        <button>Request</button>
+        <button>Serch By Itendifier</button>
+    </form>
+    <form method="POST" action="/computerLookup">
+        <input type="text" name="computerNumber" id="computerNumber" placeholder="Computer Number">
+        <button>Search By Computer</button>
     </form>
     <label>
         Student ID:<%=student.studentID%>
             Name:<%= student.name %>
-                <%= student.computerNumber %>
+                Computer Number:<%= student.computerNumber %>
     </label>
     <label>
         Email:<%=student.email%>

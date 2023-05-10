@@ -12,7 +12,7 @@ import { grabSheet } from './controllers/googleSheetController';
 import { grabSheetModel } from './models/googleSheetModel';
 import { studentDeviceCheckout } from './controllers/studentController';
 import { refreshTokens } from './models/googleAuthModel';
-import { toStudentDataPage } from './controllers/pageController';
+import { toStudentDataPage, toStudentFromComputer } from './controllers/pageController';
 import { makeNote, deleteNote } from './controllers/noteController';
 
 const app: Express = express();
@@ -64,6 +64,7 @@ app.post('/setDevice', studentDeviceCheckout);
 
 //Page changes
 app.post('/studentData', toStudentDataPage);
+app.post('/computerLookup', toStudentFromComputer);
 
 //Student Notes
 app.post('/makeNote', makeNote);

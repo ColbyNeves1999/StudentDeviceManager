@@ -4,5 +4,6 @@ type studentPage = {
     studentID: string;
     email: string;
     noteID: string;
+    computerNumber: string;
 
 };
