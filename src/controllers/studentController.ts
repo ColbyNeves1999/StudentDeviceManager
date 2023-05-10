@@ -32,6 +32,8 @@ async function studentDeviceCheckout(req: Request, res: Response) {
 
     student = await getStudentVariety(email, studentID, name);
 
+    req.session.curStudent = student;
+
     res.render('studentData', { student });
     return;
 

@@ -21,12 +21,16 @@
         <button>Request</button>
     </form>
     <label>
-        <%= student.name %>
-            <%= student.computerNumber %>
+        Student ID:<%=student.studentID%>
+            Name:<%= student.name %>
+                <%= student.computerNumber %>
+    </label>
+    <label>
+        Email:<%=student.email%>
     </label>
     <label>
         <% if (student.notes.length===0) { %>
-            <p>There are no reviews yet.</p>
+            <p>This student has no notes yet.</p>
             <% } else { %>
                 <ul>
                     <% for( const note of student.notes ) { %>

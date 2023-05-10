@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { addNote } from '../models/noteModel';
+import { addNote, deleteNodeModel } from '../models/noteModel';
 import { getStudentByName, getStudentByEmail, getStudentBySID } from '../models/studentModel';
 import { getUserByID } from '../models/userModel';
 
@@ -36,4 +36,25 @@ async function makeNote(req: Request, res: Response): Promise<void> {
 
 }
 
-export { makeNote };
+async function deleteNote(req: Request, res: Response): Promise<void> {
+
+    const { isLoggedIn } = req.session;
+
+    if (!isLoggedIn) {
+        res.sendStatus(401); // 401 Unauthorized
+        return;
+    }
+
+    const { noteID } = req.body as studentPage;
+
+    await deleteNodeModel(noteID);
+
+    req.session.curStudent = await getStudentBySID(req.session.curStudent.studentID);
+
+    let student = await req.session.curStudent;
+
+    res.render('studentData', { student });
+    return;
+}
+
+export { makeNote, deleteNote };

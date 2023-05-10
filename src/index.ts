@@ -13,7 +13,7 @@ import { grabSheetModel } from './models/googleSheetModel';
 import { studentDeviceCheckout } from './controllers/studentController';
 import { refreshTokens } from './models/googleAuthModel';
 import { toStudentDataPage } from './controllers/pageController';
-import { makeNote } from './controllers/noteController';
+import { makeNote, deleteNote } from './controllers/noteController';
 
 const app: Express = express();
 const { PORT, COOKIE_SECRET } = process.env;
@@ -67,7 +67,7 @@ app.post('/studentData', toStudentDataPage);
 
 //Student Notes
 app.post('/makeNote', makeNote);
-app.post('/deleteNote',);
+app.post('/deleteNote', deleteNote);
 
 app.listen(PORT, () => {
   console.log(`Listening at http://localhost:${PORT}`);

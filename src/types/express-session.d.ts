@@ -1,4 +1,5 @@
 import 'express-session';
+import { Student } from '../entities/Student';
 
 declare module 'express-session' {
   export interface Session {
@@ -13,6 +14,7 @@ declare module 'express-session' {
       refreshToken: string;
     };
     isLoggedIn: boolean;
+    curStudent: Student;
 
   }
 }

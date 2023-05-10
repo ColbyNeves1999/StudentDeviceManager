@@ -15,6 +15,8 @@ async function toStudentDataPage(req: Request, res: Response): Promise<void> {
 
     }
 
+    req.session.curStudent = student;
+
     res.render('studentData', { student });
 
 }
