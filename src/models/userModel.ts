@@ -19,7 +19,11 @@ async function addUser(email: string, passwordHash: string): Promise<User> {
     let newUser = new User();
     newUser.email = email;
     newUser.passwordHash = passwordHash;
-
+    if(newUser.email == process.env.ADMIN_EMAIL){
+        newUser.admin = true;
+    }else{
+        newUser.admin = false;
+    }
     // Then save it to the database
     // NOTES: We reassign to `newUser` so we can access
     // NOTES: the fields the database autogenerates (the id & default columns)
@@ -54,9 +58,9 @@ async function setAdminStatus(email: string): Promise<void> {
     const user = await getUserByEmail(email);
     const admin = await getAdmin(email);
 
-    if (admin && user) {
+    if (!admin && user && user.email != process.env.ADMIN_EMAIL) {
 
-        user.admin = true;
+        user.admin = !user.admin;
         await userRepository.save(user);
 
     }

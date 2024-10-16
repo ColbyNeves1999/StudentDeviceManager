@@ -4,6 +4,7 @@ import express, { Express } from 'express';
 import session from 'express-session';
 import connectSqlite3 from 'connect-sqlite3';
 import { scheduleJob } from 'node-schedule';
+import argon2 from 'argon2';
 
 //Controller imports
 import { registerUser, logIn, createAdmin, adminControl } from './controllers/userController';
@@ -14,11 +15,16 @@ import { studentDeviceCheckout } from './controllers/studentController';
 import { refreshTokens } from './models/googleAuthModel';
 import { toStudentDataPage, toStudentFromComputer } from './controllers/pageController';
 import { makeNote, deleteNote } from './controllers/noteController';
+import { addUser, getUserByEmail } from './models/userModel';
+//import { initializeAdmins } from './controllers/adminController';
 
 const app: Express = express();
 const { PORT, COOKIE_SECRET } = process.env;
 
 const SQLiteStore = connectSqlite3(session);
+
+const ADMIN_PASS = process.env.ADMIN_PASS;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
 app.use(
   session({
@@ -33,6 +39,8 @@ app.use(
 
 app.use(express.json());
 
+
+//Runs every hour in order to grab new students
 function iRunEveryHour() {
 
   const range = "A2:E";
@@ -45,6 +53,16 @@ function iRunEveryHour() {
 }
 
 scheduleJob('1 * * * *', iRunEveryHour);
+
+//Makes sure there's a new admin at runtime
+async function adminUser(){
+  const user = await getUserByEmail(ADMIN_EMAIL); 
+  if(!user){
+    addUser(ADMIN_EMAIL, await argon2.hash(ADMIN_PASS));
+  }
+}
+
+adminUser();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public', { extensions: ['html'] }));
