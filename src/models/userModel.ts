@@ -2,8 +2,8 @@ import { AppDataSource } from '../dataSource';
 import { User } from '../entities/User';
 import { Admin } from '../entities/Admin';
 
+//Grabs to repositories associated with users
 const userRepository = AppDataSource.getRepository(User);
-const adminRepositoy = AppDataSource.getRepository(Admin);
 
 async function getUserByEmail(email: string): Promise<User | null> {
     return userRepository.findOne({ where: { email } });
@@ -42,14 +42,13 @@ async function addAdmin(email: string): Promise<void> {
     // Then save it to the database
     // NOTES: We reassign to `newUser` so we can access
     // NOTES: the fields the database autogenerates (the id & default columns)
-    newAdmin = await adminRepositoy.save(newAdmin);
 
     return;
 
 }
 
 async function getAdmin(email: string): Promise<Admin | null> {
-    return await adminRepositoy.findOne({ where: { email } });
+return;
 }
 
 async function setAdminStatus(email: string): Promise<void> {

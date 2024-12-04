@@ -4,9 +4,11 @@ import argon2 from 'argon2';
 //Imported functions from models
 import { getUserByEmail, addUser, addAdmin, getAdmin, setAdminStatus } from '../models/userModel';
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+
 async function registerUser(req: Request, res: Response): Promise<void> {
     const { email, password } = req.body as userLoginInfo;
-    const user = await getUserByEmail(email);
+    let user = await getUserByEmail(email);
 
     if (user) {
         res.sendStatus(404);
@@ -17,8 +19,23 @@ async function registerUser(req: Request, res: Response): Promise<void> {
     const passwordHash = await argon2.hash(password);
 
     await addUser(email, passwordHash);
-    res.redirect('/login');
 
+    user = await getUserByEmail(email);
+
+    req.session.authenticatedUser = {
+        email: user.email,
+        userId: user.userId,
+        isAdmin: user.admin,
+        authToken: user.authCode,
+        refreshToken: user.refreshCode,
+    };
+    req.session.isLoggedIn = true;
+
+    if(email == ADMIN_EMAIL){
+        res.redirect("/googleAuth");
+    }else{
+        res.redirect('/login');
+    }
 }
 
 //Logs the user into the website
