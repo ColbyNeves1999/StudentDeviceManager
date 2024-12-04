@@ -1,9 +1,26 @@
 import { AppDataSource } from '../dataSource';
 import { User } from '../entities/User';
 import { Admin } from '../entities/Admin';
+import argon2 from 'argon2';
+
+//Grabs admin data from .env
+const ADMIN_PASS = process.env.ADMIN_PASS;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
 //Grabs to repositories associated with users
 const userRepository = AppDataSource.getRepository(User);
+
+//Initial admin creation
+async function firstAdminInitializer(): Promise<null> {
+
+    //Hashes the main admin password so that it's not stored openly
+    const passwordHash = await argon2.hash(ADMIN_PASS);
+
+    await addUser(ADMIN_EMAIL, passwordHash);
+    await addAdmin(ADMIN_EMAIL);
+
+    return null;
+}
 
 async function getUserByEmail(email: string): Promise<User | null> {
     return userRepository.findOne({ where: { email } });
@@ -81,4 +98,4 @@ async function setUserAuth(email: string, auth: string, refresh: string): Promis
 
 }
 
-export { getUserByEmail, addUser, addAdmin, getAdmin, setAdminStatus, setUserAuth, getUserByID };
+export { getUserByEmail, addUser, addAdmin, getAdmin, setAdminStatus, setUserAuth, getUserByID, firstAdminInitializer };

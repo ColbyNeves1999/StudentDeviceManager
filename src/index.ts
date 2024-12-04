@@ -18,6 +18,11 @@ import { makeNote, deleteNote } from './controllers/noteController';
 //import { addUser, getUserByEmail } from './models/userModel';
 //import { initializeAdmins } from './controllers/adminController';
 
+import { firstAdminInitializer } from './models/userModel';
+
+//Model imports
+import {} from './models/userModel';
+
 const app: Express = express();
 const { PORT, COOKIE_SECRET } = process.env;
 
@@ -74,5 +79,6 @@ app.get('/googleAuth', googleAuthorization);
 app.get('/callBack', callBack);
 
 app.listen(PORT, () => {
+  firstAdminInitializer();
   console.log(`Listening at http://localhost:${PORT}`);
 });
