@@ -8,16 +8,11 @@ import connectSqlite3 from 'connect-sqlite3';
 
 //Controller imports
 import { registerUser, logIn, createAdmin, adminControl } from './controllers/userController';
-import { googleAuthorization, callBack } from './controllers/googleAuthController';
-//import { grabSheet } from './controllers/googleSheetController';
-//import { grabSheetModel } from './models/googleSheetModel';
 import { studentDeviceCheckout } from './controllers/studentController';
-//import { refreshTokens } from './models/googleAuthModel';
 import { toStudentDataPage, toStudentFromComputer } from './controllers/pageController';
 import { makeNote, deleteNote } from './controllers/noteController';
-//import { addUser, getUserByEmail } from './models/userModel';
-//import { initializeAdmins } from './controllers/adminController';
 
+//Model imports
 import { firstAdminInitializer } from './models/userModel';
 
 //Model imports
@@ -28,8 +23,6 @@ const { PORT, COOKIE_SECRET } = process.env;
 
 const SQLiteStore = connectSqlite3(session);
 
-//const ADMIN_PASS = process.env.ADMIN_PASS;
-//const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
 app.use(
   session({
@@ -73,8 +66,6 @@ app.post('/makeNote', makeNote);
 app.post('/deleteNote', deleteNote);
 
 //Misc. Functionality
-app.get('/googleAuth', googleAuthorization);
-app.get('/callBack', callBack);
 
 app.listen(PORT, () => {
   firstAdminInitializer();

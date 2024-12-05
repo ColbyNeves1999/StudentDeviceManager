@@ -4,9 +4,11 @@ import argon2 from 'argon2';
 //Imported functions from models
 import { getUserByEmail, addUser, addAdmin } from '../models/userModel';
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-
+//Handles to registration of a new user(s)
+//The objective here is to allow for batch user creations if desired
+//so changes will be made to accommodate that 
 async function registerUser(req: Request, res: Response): Promise<void> {
+    
     const { email, password } = req.body as userLoginInfo;
     let user = await getUserByEmail(email);
 
@@ -31,11 +33,6 @@ async function registerUser(req: Request, res: Response): Promise<void> {
     };
     req.session.isLoggedIn = true;
 
-    if(email == ADMIN_EMAIL){
-        res.redirect("/googleAuth");
-    }else{
-        res.redirect('/login');
-    }
 }
 
 //Logs the user into the website
