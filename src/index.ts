@@ -10,7 +10,7 @@ import connectSqlite3 from 'connect-sqlite3';
 import { registerUser, logIn, adminStatusManagment, sessionRefresh } from './controllers/userController';
 import { studentDeviceCheckout } from './controllers/studentController';
 import { toStudentDataPage } from './controllers/pageController';
-import { makeNote, deleteNote } from './controllers/noteController';
+import { makeNote } from './controllers/noteController';
 
 //Model imports
 import { firstAdminInitializer } from './models/userModel';
@@ -67,7 +67,6 @@ app.post('/studentData', toStudentDataPage);
 
 //Student Notes
 app.post('/makeNote', makeNote);
-app.post('/deleteNote', deleteNote);
 ///////////////////////////
 
 //Misc. Functionality

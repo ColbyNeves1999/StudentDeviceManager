@@ -1,8 +1,6 @@
 type noteOptions = {
 
-    name: string;
-    studentID: string;
-    email: string;
+    searchValue: string;
     noteText: string;
 
 }

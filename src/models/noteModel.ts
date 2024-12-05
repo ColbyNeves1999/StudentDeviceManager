@@ -17,21 +17,10 @@ async function addNote(noteText: string, student: Student, user: User): Promise<
     return newNotes;
 
 }
-
-async function deleteNodeModel(noteID: string): Promise<void> {
-
-    await noteRepository
-        .createQueryBuilder('notes')
-        .delete()
-        .where('noteID = :noteID', { noteID })
-        .execute();
-
-}
-
 async function getNoteById(noteID: string): Promise<Notes> {
 
     return await noteRepository.findOne({ where: { noteID } });
 
 }
 
-export { addNote, deleteNodeModel, getNoteById };
+export { addNote, getNoteById };
