@@ -7,7 +7,7 @@ import connectSqlite3 from 'connect-sqlite3';
 //import argon2 from 'argon2';
 
 //Controller imports
-import { registerUser, logIn, createAdmin, adminControl } from './controllers/userController';
+import { registerUser, logIn, adminStatusManagment } from './controllers/userController';
 import { studentDeviceCheckout } from './controllers/studentController';
 import { toStudentDataPage, toStudentFromComputer } from './controllers/pageController';
 import { makeNote, deleteNote } from './controllers/noteController';
@@ -46,8 +46,7 @@ app.set('view engine', 'ejs');
 //Account Managment links
 app.post('/register', registerUser);
 app.post('/login', logIn);
-app.post('/createAdmin', createAdmin);
-app.get('/adminStatus', adminControl);
+app.post('/adminStatus', adminStatusManagment);
 
 //Student Managment
 app.post('/setDevice', studentDeviceCheckout);

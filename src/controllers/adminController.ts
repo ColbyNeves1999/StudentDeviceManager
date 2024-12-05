@@ -4,11 +4,8 @@ import { firstAdminInitializer } from '../models/userModel';
 
 async function initializeAdmins(req: Request, res: Response): Promise<void> {
 
-    //Verifies that a user with that email doesn't already exist
+    //Calls for the creation of an admin on server startup
     firstAdminInitializer();
-
-    //Redirects to primary drop page
-    res.redirect('/index');
 
 }
 
