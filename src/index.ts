@@ -44,16 +44,14 @@ app.use(
 
 app.use(express.json());
 
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static('public', { extensions: ['html'] }));
+app.set('view engine', 'ejs');
 
 //Function that is ran in order to execute a student data grab
 ///////
 //Student Data Grab Function location
 ///////
-
-
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static('public', { extensions: ['html'] }));
-app.set('view engine', 'ejs');
 
 //Account Managment links
 app.post('/register', registerUser);

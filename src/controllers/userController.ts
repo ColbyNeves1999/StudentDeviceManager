@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import argon2 from 'argon2';
 
 //Imported functions from models
-import { getUserByEmail, addUser, addAdmin, getAdmin, setAdminStatus } from '../models/userModel';
+import { getUserByEmail, addUser, addAdmin } from '../models/userModel';
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
@@ -75,13 +75,6 @@ async function createAdmin(req: Request, res: Response): Promise<void> {
 
     const { email } = req.body as userLoginInfo;
 
-    const admin = await getAdmin(email);
-
-    if (admin) {
-        res.sendStatus(200);
-        return;
-    }
-
     await addAdmin(email);
 
     res.sendStatus(200);
@@ -96,8 +89,6 @@ async function adminControl(req: Request, res: Response): Promise<void> {
         res.sendStatus(404);
         return;
     }
-
-    await setAdminStatus(req.session.authenticatedUser.email);
 
     const user = await getUserByEmail(req.session.authenticatedUser.email);
 

@@ -1,6 +1,5 @@
 import { AppDataSource } from '../dataSource';
 import { User } from '../entities/User';
-import { Admin } from '../entities/Admin';
 import argon2 from 'argon2';
 
 //Grabs admin data from .env
@@ -14,11 +13,14 @@ const userRepository = AppDataSource.getRepository(User);
 async function firstAdminInitializer(): Promise<null> {
 
     //Hashes the main admin password so that it's not stored openly
-    const passwordHash = await argon2.hash(ADMIN_PASS);
+    if(!(await getUserByEmail(ADMIN_EMAIL))){
+        
+        const passwordHash = await argon2.hash(ADMIN_PASS);
 
-    await addUser(ADMIN_EMAIL, passwordHash);
-    await addAdmin(ADMIN_EMAIL);
+        await addUser(ADMIN_EMAIL, passwordHash);
+        await addAdmin(ADMIN_EMAIL);
 
+    }
     return null;
 }
 
@@ -64,27 +66,6 @@ async function addAdmin(email: string): Promise<void> {
 
 }
 
-async function getAdmin(email: string): Promise<Admin | null> {
-return;
-}
-
-async function setAdminStatus(email: string): Promise<void> {
-
-
-    const user = await getUserByEmail(email);
-    const admin = await getAdmin(email);
-
-    if (!admin && user && user.email != process.env.ADMIN_EMAIL) {
-
-        user.admin = !user.admin;
-        await userRepository.save(user);
-
-    }
-
-    return;
-
-}
-
 async function setUserAuth(email: string, auth: string, refresh: string): Promise<User> {
 
     const user = await getUserByEmail(email);
@@ -98,4 +79,4 @@ async function setUserAuth(email: string, auth: string, refresh: string): Promis
 
 }
 
-export { getUserByEmail, addUser, addAdmin, getAdmin, setAdminStatus, setUserAuth, getUserByID, firstAdminInitializer };
+export { getUserByEmail, addUser, addAdmin, setUserAuth, getUserByID, firstAdminInitializer };

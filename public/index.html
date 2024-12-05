@@ -9,10 +9,22 @@
 </head>
 
 <body class="homepage">
-    <h1 class="header1">Welcome to Student Device Manager</h1>
-    <!--<h3><a href="/register"> Create an Account Here!</a></h3>-->
-    <h3><a href="/login"> Login</a></h3>
-    <!--<h3><a href="/grabSheet"> grabSheet</a></h3>-->
+
+    <h1 class="header1">Student Device Manager</h1>
+
+    <div>
+        <form method="POST" action="/login">
+            <!-- calls the post method to login the user to the server -->
+            <label for="email"></label>
+            <input class="input" type="email" name="email" id="email" placeholder="Email" required>
+            <label class="input" for="password"></label>
+            <input class="input" type="password" name="password" id="password" placeholder="Password" required>
+            <div>
+                <button class="btn">Login</button>
+            </div>
+        </form>
+    </div>
+
 </body>
 
 <!--<body>
