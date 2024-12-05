@@ -20,9 +20,6 @@ export class Student {
     @Column({ unique: true })
     email: string;
 
-    @Column({ unique: true })
-    password: string;
-
     @Column({ default: null, unique: true })
     computerNumber: string;
 

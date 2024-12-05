@@ -1,43 +1,24 @@
 import { Request, Response } from 'express';
-import { getStudentVariety, getStudentByComputer } from '../models/studentModel';
-
-import { Student } from '../entities/Student';
+import { getStudentVariety } from '../models/studentModel';
 
 async function toStudentDataPage(req: Request, res: Response): Promise<void> {
 
-    const { name, studentID, email } = req.body as studentPage;
+    const { searchValue } = req.body as studentSearchValue;
 
-    let student = new Student();
+    //Searches for a student using the data that was input
+    const student = await getStudentVariety(searchValue);
 
-    if (name || studentID || email) {
+    //If student exists, it brings up their data, otherwise it just returns to search page
+    if(student){
 
-        student = await getStudentVariety(email, studentID, name);
+        res.render('studentData', { student });
+
+    }else{
+
+        //res.render('', {});
 
     }
-
-    //Investigate this more. Why did I do this?
-    //req.session.curStudent = student;
-
-    res.render('studentData', { student });
 
 }
 
-async function toStudentFromComputer(req: Request, res: Response): Promise<void> {
-
-    const { computerNumber } = req.body as studentPage;
-
-    let student = new Student();
-
-    if (computerNumber) {
-
-        student = await getStudentByComputer(computerNumber);
-
-    }
-    
-    //Investigate this more. Why did I do this?
-    //req.session.curStudent = student;
-
-    res.render('studentData', { student });
-
-}
-export { toStudentDataPage, toStudentFromComputer };
+export { toStudentDataPage };

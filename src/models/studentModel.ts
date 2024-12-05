@@ -3,13 +3,52 @@ import { Student } from '../entities/Student';
 
 const studentRepository = AppDataSource.getRepository(Student);
 
-async function addStudent(studentId: string, name: string, grade: string, email: string, password: string): Promise<Student | null> {
+//Grabs Student Data by Email
+async function getStudentByEmail(email: string): Promise<Student | null> {
+    return await studentRepository.findOne({ relations: ['notes'], where: { email } });
+}
 
+//Grabs Student Data by Student ID
+async function getStudentBySID(studentID: string): Promise<Student | null> {
+    return await studentRepository.findOne({ relations: ['notes'], where: { studentID } });
+}
+
+//Grabs Student Data by their Name
+async function getStudentByName(name: string): Promise<Student | null> {
+    return await studentRepository.findOne({ relations: ['notes'], where: { name } });
+}
+
+//Grabs Student Data by Computer Number
+async function getStudentByComputer(computerNumber: string): Promise<Student | null> {
+    return await studentRepository.findOne({ relations: ['notes'], where: { computerNumber } });
+}
+
+//Searches for a student using the previously declared functions and their resulting data
+async function getStudentVariety(searchValue: string): Promise<Student | null> {
+
+    //Returns whichever data ends up being the most accurate
+    return (
+
+         await getStudentByName(searchValue) 
+      || await getStudentByEmail(searchValue) 
+      || await getStudentBySID(searchValue) 
+      || await getStudentByComputer(searchValue) 
+      || null
+
+    );
+
+}
+
+//Creates a new student and adds them to the database
+async function addStudent(studentId: string, name: string, grade: string, email: string): Promise<Student | null> {
+
+    //Verifies that a student doesn't get created if they already exist.
     const student = await getStudentBySID(studentId);
 
+    //If the student exists, the function is ended early
     if (student) {
 
-        return null;
+        return student;
 
     }
 
@@ -19,61 +58,27 @@ async function addStudent(studentId: string, name: string, grade: string, email:
     newStudent.name = name;
     newStudent.grade = grade;
     newStudent.email = email;
-    newStudent.password = password;
 
     newStudent = await studentRepository.save(newStudent);
 
+    //Returns the new student's object
     return newStudent;
 
 }
 
-async function getStudentByEmail(email: string): Promise<Student | null> {
-    return await studentRepository.findOne({ relations: ['notes'], where: { email } });
-}
+//Assigns the device number to a student
+async function setStudentDevice(deviceNumber: string, searchValue: string): Promise<null> {
 
-async function getStudentBySID(studentID: string): Promise<Student | null> {
-    return await studentRepository.findOne({ relations: ['notes'], where: { studentID } });
-}
-
-async function getStudentByName(name: string): Promise<Student | null> {
-    return await studentRepository.findOne({ relations: ['notes'], where: { name } });
-}
-
-async function getStudentByComputer(computerNumber: string): Promise<Student | null> {
-    return await studentRepository.findOne({ relations: ['notes'], where: { computerNumber } });
-}
-
-async function getStudentVariety(email: string, studentID: string, name: string): Promise<Student | null> {
-
-    let student;
-
-    if (studentID) {
-
-        student = await getStudentBySID(studentID);
-
-    } else if (name) {
-
-        student = await getStudentByName(name);
-
-    } else if (email) {
-
-        student = await getStudentByEmail(email);
-
-    }
-
-    return student;
-
-}
-
-async function setStudentDevice(deviceNumber: string, studentID: string, email: string, name: string): Promise<Student> {
-
-    let student = await getStudentVariety(email, studentID, name);
+    //Looks for a student
+    let student = await getStudentVariety(searchValue);
+    
+    //If the student exists then their computer is assigned to them and saved
     if (student) {
         student.computerNumber = deviceNumber;
         await studentRepository.save(student);
     }
 
-    return student;
+    return null;
 
 }
 

@@ -7,9 +7,9 @@ import connectSqlite3 from 'connect-sqlite3';
 //import argon2 from 'argon2';
 
 //Controller imports
-import { registerUser, logIn, adminStatusManagment } from './controllers/userController';
+import { registerUser, logIn, adminStatusManagment, sessionRefresh } from './controllers/userController';
 import { studentDeviceCheckout } from './controllers/studentController';
-import { toStudentDataPage, toStudentFromComputer } from './controllers/pageController';
+import { toStudentDataPage } from './controllers/pageController';
 import { makeNote, deleteNote } from './controllers/noteController';
 
 //Model imports
@@ -44,24 +44,34 @@ app.set('view engine', 'ejs');
 ///////
 
 //Account Managment links
-app.post('/register', registerUser);
+//Logs the user in
 app.post('/login', logIn);
+//Allows for registration of a new student
+app.post('/register', registerUser);
+//Allows for modification of admin status
 app.post('/adminStatus', adminStatusManagment);
+//Directs user to their homepage
+app.post('/homepage', sessionRefresh);
+///////////////////////////
 
 //Student Managment
 app.post('/setDevice', studentDeviceCheckout);
+///////////////////////////
 
 //Device Managment
+///////////////////////////
 
 //Page Transitions
 app.post('/studentData', toStudentDataPage);
-app.post('/computerLookup', toStudentFromComputer);
+///////////////////////////
 
 //Student Notes
 app.post('/makeNote', makeNote);
 app.post('/deleteNote', deleteNote);
+///////////////////////////
 
 //Misc. Functionality
+///////////////////////////
 
 app.listen(PORT, () => {
   firstAdminInitializer();

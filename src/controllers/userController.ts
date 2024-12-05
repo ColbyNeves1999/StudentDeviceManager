@@ -76,7 +76,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
     if(req.session.isLoggedIn === true && req.session.authenticatedUser.email === user.email){
 
         //Renders the homepage of the user that is logged in
-        res.render('userHomepage', { user });
+        res.redirect('/homepage');
         return;
 
     }else{
@@ -86,6 +86,23 @@ async function logIn(req: Request, res: Response): Promise<void> {
         return;
 
     }
+
+}
+
+//Refreshes the data for the user's current session
+async function sessionRefresh(req: Request, res: Response): Promise<void>{
+
+    let user = await getUserByEmail(req.session.authenticatedUser.email);
+
+    req.session.authenticatedUser = {
+        username: user.username,
+        email: user.email,
+        userId: user.userId,
+        isAdmin: user.admin,
+    };
+    req.session.isLoggedIn = true;
+
+    res.render("userHomepage", { user });
 
 }
 
@@ -107,4 +124,4 @@ async function adminStatusManagment(req: Request, res: Response): Promise<void> 
 
 }
 
-export { registerUser, logIn, adminStatusManagment };
+export { registerUser, logIn, adminStatusManagment, sessionRefresh };

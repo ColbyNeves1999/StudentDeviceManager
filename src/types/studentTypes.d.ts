@@ -4,11 +4,8 @@ type studentData = {
 
 }
 
-type studentComputer = {
+type studentSearchValue = {
 
-    studentID: string;
-    name: string;
-    email: string;
-    deviceNumber: string;
+    searchValue: string;
 
 };
