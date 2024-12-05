@@ -8,6 +8,9 @@ export class User {
     @PrimaryGeneratedColumn('uuid')
     userId: string;
 
+    @Column({ unique: false})
+    username: string;
+
     @Column({ unique: true })
     email: string;
 
@@ -16,12 +19,6 @@ export class User {
 
     @Column({ default: false })
     admin: boolean;
-
-    @Column({ default: null })
-    authCode: string;
-
-    @Column({ default: null })
-    refreshCode: string;
 
     @ManyToMany(() => Notes, (notes) => notes.user, { cascade: ['insert', 'update'] })
     @JoinTable()

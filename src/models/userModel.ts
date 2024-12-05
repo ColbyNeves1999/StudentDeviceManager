@@ -3,25 +3,33 @@ import { User } from '../entities/User';
 import argon2 from 'argon2';
 
 //Grabs admin data from .env
+const ADMIN_USER = process.env.ADMIN_USER;
 const ADMIN_PASS = process.env.ADMIN_PASS;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 
 //Grabs to repositories associated with users
 const userRepository = AppDataSource.getRepository(User);
 
-//Initial admin creation
-async function firstAdminInitializer(): Promise<null> {
+async function addUser(email: string, passwordHash: string, username: string): Promise<User> {
 
-    //Hashes the main admin password so that it's not stored openly
-    if(!(await getUserByEmail(ADMIN_EMAIL))){
-        
-        const passwordHash = await argon2.hash(ADMIN_PASS);
+    // Create the new user object and saves data
+    let newUser = new User();
+    newUser.email = email;
+    newUser.passwordHash = passwordHash;
+    newUser.username = username;
 
-        await addUser(ADMIN_EMAIL, passwordHash);
-        await addAdmin(ADMIN_EMAIL);
+    //Function that is ran in order to determine admin status
+    ///////
+    //Admin Classification Function location
+    ///////
 
-    }
-    return null;
+    // Then save it to the database
+    // NOTES: We reassign to `newUser` so we can access
+    // NOTES: the fields the database autogenerates (the id & default columns)
+    newUser = await userRepository.save(newUser);
+
+    return newUser;
+
 }
 
 async function getUserByEmail(email: string): Promise<User | null> {
@@ -32,51 +40,26 @@ async function getUserByID(userId: string): Promise<User | null> {
     return userRepository.findOne({ where: { userId } });
 }
 
-async function addUser(email: string, passwordHash: string): Promise<User> {
+//Initial admin creation
+async function firstAdminInitializer(): Promise<null> {
 
-    // Create the new user object and saves data
-    let newUser = new User();
-    newUser.email = email;
-    newUser.passwordHash = passwordHash;
-    if(newUser.email == process.env.ADMIN_EMAIL){
-        newUser.admin = true;
-    }else{
-        newUser.admin = false;
+    //Hashes the main admin password so that it's not stored openly
+    if(!(await getUserByEmail(ADMIN_EMAIL))){
+
+        const passwordHash = await argon2.hash(ADMIN_PASS);
+
+        await addUser(ADMIN_EMAIL, passwordHash, ADMIN_USER);
+
     }
-    // Then save it to the database
-    // NOTES: We reassign to `newUser` so we can access
-    // NOTES: the fields the database autogenerates (the id & default columns)
-    newUser = await userRepository.save(newUser);
+    return null;
+}
 
-    return newUser;
+async function addAdmin(email: string): Promise<null>{
+
+    await getUserByEmail(email);
+
+    return null;
 
 }
 
-async function addAdmin(email: string): Promise<void> {
-
-    // Create the new user object and saves data
-    let newAdmin = new User();
-    newAdmin.email = email;
-
-    // Then save it to the database
-    // NOTES: We reassign to `newUser` so we can access
-    // NOTES: the fields the database autogenerates (the id & default columns)
-
-    return;
-
-}
-
-async function setUserAuth(email: string, auth: string, refresh: string): Promise<User> {
-
-    const user = await getUserByEmail(email);
-
-    user.authCode = auth;
-    user.refreshCode = refresh;
-
-    await userRepository.save(user);
-
-    return user;
-
-}
-
-export { getUserByEmail, addUser, addAdmin, setUserAuth, getUserByID, firstAdminInitializer };
+export { addUser, firstAdminInitializer, getUserByEmail, getUserByID, addAdmin };

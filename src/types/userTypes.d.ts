@@ -1,13 +1,7 @@
 type userLoginInfo = {
 
+    username: string;
     email: string;
     password: string;
-
-};
-
-type userGoogleIngo = {
-
-    access_token: string;
-    refresh_token: string;
 
 };

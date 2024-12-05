@@ -49,11 +49,15 @@ async function deleteNote(req: Request, res: Response): Promise<void> {
 
     await deleteNodeModel(noteID);
 
-    req.session.curStudent = await getStudentBySID(req.session.curStudent.studentID);
+    //Investigate this more. Why did I do this?
+    ///////
+    //req.session.curStudent = await getStudentBySID(req.session.curStudent.studentID);
 
-    let student = await req.session.curStudent;
+    //let student = await req.session.curStudent;
 
-    res.render('studentData', { student });
+    //res.render('studentData', { student });
+    ///////
+
     return;
 }
 

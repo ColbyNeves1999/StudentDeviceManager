@@ -2,14 +2,14 @@ import { Request, Response } from 'express';
 import argon2 from 'argon2';
 
 //Imported functions from models
-import { getUserByEmail, addUser, addAdmin } from '../models/userModel';
+import { getUserByEmail, addUser, addAdmin} from '../models/userModel';
 
 //Handles to registration of a new user(s)
 //The objective here is to allow for batch user creations if desired
 //so changes will be made to accommodate that 
 async function registerUser(req: Request, res: Response): Promise<void> {
     
-    const { email, password } = req.body as userLoginInfo;
+    const { email, password, username } = req.body as userLoginInfo;
     let user = await getUserByEmail(email);
 
     if (user) {
@@ -20,16 +20,15 @@ async function registerUser(req: Request, res: Response): Promise<void> {
     // IMPORTANT: Hash the password
     const passwordHash = await argon2.hash(password);
 
-    await addUser(email, passwordHash);
+    await addUser(email, passwordHash, username);
 
     user = await getUserByEmail(email);
 
     req.session.authenticatedUser = {
+        username: user.username,
         email: user.email,
         userId: user.userId,
         isAdmin: user.admin,
-        authToken: user.authCode,
-        refreshToken: user.refreshCode,
     };
     req.session.isLoggedIn = true;
 
@@ -54,20 +53,31 @@ async function logIn(req: Request, res: Response): Promise<void> {
     }
 
     req.session.authenticatedUser = {
+        username: user.username,
         email: user.email,
         userId: user.userId,
         isAdmin: user.admin,
-        authToken: user.authCode,
-        refreshToken: user.refreshCode,
     };
     req.session.isLoggedIn = true;
+    
 
-    res.redirect('/adminStatus');
-    return;
+    //Probably not necessary but wanted to keep shenanigans that
+    //may be used to access someone's account after they've logged out
+    if(req.session.isLoggedIn === true && req.session.authenticatedUser.email === user.email){
+
+        res.render('userHomepage', { user });
+        return;
+
+    }else{
+
+        res.redirect("index.html");
+        return;
+
+    }
 
 }
 
-//Creates admins
+//Controller that handles the creation of admins
 async function createAdmin(req: Request, res: Response): Promise<void> {
 
     const { email } = req.body as userLoginInfo;
@@ -93,17 +103,9 @@ async function adminControl(req: Request, res: Response): Promise<void> {
         req.session.authenticatedUser.isAdmin = true;
     }
 
-    if (user.authCode) {
-
-        res.redirect('/index');
-        return;
-
-    } else {
-
-        res.redirect('/googleAuth');
-        return;
-
-    }
+    res.redirect('/index');
+    return;
+    
 }
 
 export { registerUser, logIn, createAdmin, adminControl };

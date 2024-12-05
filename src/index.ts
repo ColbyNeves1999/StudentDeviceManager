@@ -15,9 +15,6 @@ import { makeNote, deleteNote } from './controllers/noteController';
 //Model imports
 import { firstAdminInitializer } from './models/userModel';
 
-//Model imports
-import {} from './models/userModel';
-
 const app: Express = express();
 const { PORT, COOKIE_SECRET } = process.env;
 

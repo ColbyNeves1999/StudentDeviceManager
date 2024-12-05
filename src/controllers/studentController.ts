@@ -6,7 +6,7 @@ import { getUserByID } from '../models/userModel';
 
 async function studentDeviceCheckout(req: Request, res: Response) {
 
-    if (!req.session.isLoggedIn || !req.session.authenticatedUser.authToken) {
+    if (!req.session.isLoggedIn) {
 
         res.redirect('/login');
         return;
@@ -22,7 +22,8 @@ async function studentDeviceCheckout(req: Request, res: Response) {
 
     if (student.computerNumber === deviceNumber) {
 
-        req.session.curStudent = student;
+        //Investigate this more. Why did I do this?
+        //req.session.curStudent = student;
 
         res.render('studentData', { student });
         return;
@@ -41,7 +42,8 @@ async function studentDeviceCheckout(req: Request, res: Response) {
 
     student = await getStudentVariety(email, studentID, name);
 
-    req.session.curStudent = student;
+    //Investigate this more. Why did I do this?
+    //req.session.curStudent = student;
 
     res.render('studentData', { student });
     return;

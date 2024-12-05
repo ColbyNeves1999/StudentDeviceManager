@@ -15,7 +15,8 @@ async function toStudentDataPage(req: Request, res: Response): Promise<void> {
 
     }
 
-    req.session.curStudent = student;
+    //Investigate this more. Why did I do this?
+    //req.session.curStudent = student;
 
     res.render('studentData', { student });
 
@@ -32,8 +33,9 @@ async function toStudentFromComputer(req: Request, res: Response): Promise<void>
         student = await getStudentByComputer(computerNumber);
 
     }
-
-    req.session.curStudent = student;
+    
+    //Investigate this more. Why did I do this?
+    //req.session.curStudent = student;
 
     res.render('studentData', { student });
 

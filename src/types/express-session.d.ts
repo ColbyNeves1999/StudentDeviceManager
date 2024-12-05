@@ -7,14 +7,12 @@ declare module 'express-session' {
 
     // NOTES: Add your app's custom session properties here:
     authenticatedUser: {
+      username: string;
       email: string;
       userId: string;
       isAdmin: boolean;
-      authToken: string;
-      refreshToken: string;
     };
     isLoggedIn: boolean;
-    curStudent: Student;
 
   }
 }
