@@ -20,6 +20,19 @@ export class Student {
     @Column({ unique: true })
     email: string;
 
+    //Hashes exist to make student searching more reliable
+    @Column({ unique: true })
+    studentIDHash: string;
+
+    @Column({ default: null })
+    nameHash: string;
+
+    @Column({ default: null })
+    gradeHash: string;
+
+    @Column({ unique: true })
+    emailHash: string;
+
     @Column({ default: null, unique: true })
     computerNumber: string;
 

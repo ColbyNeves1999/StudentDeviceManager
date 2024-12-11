@@ -1,5 +1,7 @@
 import { AppDataSource } from '../dataSource';
 import { Student } from '../entities/Student';
+import { dataEncrypt } from './securityModel';
+import argon2 from 'argon2';
 
 const studentRepository = AppDataSource.getRepository(Student);
 
@@ -26,21 +28,37 @@ async function getStudentByComputer(computerNumber: string): Promise<Student | n
 //Searches for a student using the previously declared functions and their resulting data
 async function getStudentVariety(searchValue: string): Promise<Student | null> {
 
-    //Returns whichever data ends up being the most accurate
-    return (
+    const expectedValue = await argon2.hash(searchValue);
 
-         await getStudentByName(searchValue) 
-      || await getStudentByEmail(searchValue) 
-      || await getStudentBySID(searchValue) 
-      || await getStudentByComputer(searchValue) 
-      || null
+    try{
 
-    );
+        //Returns whichever data ends up matching first using 
+        return await Promise.any([
+
+            await getStudentByName(expectedValue),
+            await getStudentByEmail(expectedValue),
+            await getStudentBySID(expectedValue),
+            await getStudentByComputer(expectedValue) 
+
+        ]);
+
+    } catch {
+
+        //If a student isn't found, then a null is returned
+        return null
+
+    }
 
 }
 
 //Creates a new student and adds them to the database
 async function addStudent(studentId: string, name: string, grade: string, email: string): Promise<Student | null> {
+
+    //Hashes student data that is going to be stored to make searching easier
+    const sIDhash = await argon2.hash(studentId);
+    const sNhash = await argon2.hash(name);
+    const sGhash = await argon2.hash(grade);
+    const sEhash = await argon2.hash(email);
 
     //Verifies that a student doesn't get created if they already exist.
     const student = await getStudentBySID(studentId);
@@ -52,12 +70,16 @@ async function addStudent(studentId: string, name: string, grade: string, email:
 
     }
 
-    // Create the new user object and saves data
+    // Create the new user object and saves data through hashing and encryption
     let newStudent = new Student();
-    newStudent.studentID = studentId;
-    newStudent.name = name;
-    newStudent.grade = grade;
-    newStudent.email = email;
+    newStudent.studentID = dataEncrypt(studentId);
+    newStudent.studentIDHash = sIDhash;
+    newStudent.name = dataEncrypt(name);
+    newStudent.nameHash = sNhash;
+    newStudent.grade = dataEncrypt(grade);
+    newStudent.gradeHash = sGhash;
+    newStudent.email = dataEncrypt(email);
+    newStudent.emailHash = sEhash;
 
     newStudent = await studentRepository.save(newStudent);
 

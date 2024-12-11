@@ -17,6 +17,7 @@ async function addNote(noteText: string, student: Student, user: User): Promise<
     return newNotes;
 
 }
+
 async function getNoteById(noteID: string): Promise<Notes> {
 
     return await noteRepository.findOne({ where: { noteID } });
