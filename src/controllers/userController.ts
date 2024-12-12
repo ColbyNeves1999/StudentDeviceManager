@@ -1,19 +1,21 @@
 import { Request, Response } from 'express';
 import argon2 from 'argon2';
 
+import customLogger from '../utils/logging';
+
 //Imported functions from models
 import { getUserByEmail, addUser, changeAdminStatus} from '../models/userModel';
 
 //Handles to registration of a new user(s)
 //The objective here is to allow for batch user creations if desired
-//so changes will be made to accommodate that 
+//so changes will eventually be made to accommodate that 
 async function registerUser(req: Request, res: Response): Promise<void> {
     
     const { email, password, username, adminStatus } = req.body as userLoginInfo;
     let user = await getUserByEmail(email);
 
     if (user) {
-        res.sendStatus(404);
+        customLogger.log('information', "User already exists.");
         return;
     }
 
@@ -23,6 +25,18 @@ async function registerUser(req: Request, res: Response): Promise<void> {
     await addUser(email, passwordHash, username, adminStatus );
 
     user = await getUserByEmail(email);
+
+    if (user) {
+
+        customLogger.log('success', "User now exists.");
+        
+    }
+    else{
+
+        customLogger.log('error', "User wasn't created");
+        return;
+
+    }
 
     req.session.authenticatedUser = {
         username: user.username,
@@ -116,9 +130,8 @@ async function adminStatusManagment(req: Request, res: Response): Promise<void> 
     await changeAdminStatus(email);
 
     //This Will be changed to refresh the user's page when their admin choices are made
-    //For now it will just return a 200 status showing it succeeded 
     ///////
-    res.sendStatus(200);
+    location.reload();
     return;
     ///////
 

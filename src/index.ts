@@ -4,6 +4,7 @@ import express, { Express } from 'express';
 import session from 'express-session';
 import connectSqlite3 from 'connect-sqlite3';
 import { scheduleJob } from 'node-schedule';
+import customLogger from './utils/logging';
 
 //Controller imports
 import { registerUser, logIn, adminStatusManagment, sessionRefresh } from './controllers/userController';
@@ -22,6 +23,7 @@ const { PORT, COOKIE_SECRET } = process.env;
 const SQLiteStore = connectSqlite3(session);
 
 //Session managment
+///////
 app.use(
   session({
     store: new SQLiteStore({ db: 'sessions.sqlite' }),
@@ -38,7 +40,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public', { extensions: ['html'] }));
 app.set('view engine', 'ejs');
-
+///////
 
 //Function and timing that is ran in order to execute a student data grab
 ///////
@@ -46,9 +48,9 @@ const SHEETS = [process.env.SHEET1, process.env.SHEET2, process.env.SHEET3];
 
 async function refresh(){
 
-  let datetime = new Date();
-
-  console.log("Starting pull: " + datetime);
+  //This log will be used with others to determine length of runtime if necessary
+  //Logs that a data pull has started
+  customLogger.log('information', "Starting student pull request.");
 
   try {
 
@@ -64,18 +66,19 @@ async function refresh(){
 
     )
 
-    datetime = new Date();
-    console.log("Finished at: " + datetime);
+    //Logs that the data pull was successful
+    customLogger.log('success', "Finished at pulling student data");
     
   }catch (error){
 
-    datetime = new Date();
-    console.log("failed to pull the data at: " + datetime);
+    //Logs if something causes this reoccuring function to fail
+    customLogger.log('error', error);
 
   }
 
 }
 
+//Runs at 6 AM and PM everyday, this can be changed.
 scheduleJob('0 6,18 * * *', refresh);
 ///////
 
@@ -115,4 +118,5 @@ app.listen(PORT, () => {
   //When the application is started, the admin is initialized/verified
   firstAdminInitializer();
   console.log(`Listening at http://localhost:${PORT}`);
+
 });

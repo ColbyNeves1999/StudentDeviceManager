@@ -2,6 +2,7 @@ import { AppDataSource } from '../dataSource';
 import { Student } from '../entities/Student';
 import { dataEncrypt } from './securityModel';
 import argon2 from 'argon2';
+import customLogger from '../utils/logging';
 
 const studentRepository = AppDataSource.getRepository(Student);
 
@@ -44,7 +45,8 @@ async function getStudentVariety(searchValue: string): Promise<Student | null> {
 
     } catch {
 
-        //If a student isn't found, then a null is returned
+        //If a student isn't found, then a null is returned and the failed search is logged
+        customLogger.log('information', "Student not found using: " + expectedValue);
         return null
 
     }
@@ -63,7 +65,7 @@ async function addStudent(studentId: string, name: string, grade: string, email:
     //Verifies that a student doesn't get created if they already exist.
     const student = await getStudentBySID(studentId);
 
-    //If the student exists, the function is ended early
+    //If the student exists, the function is ended early and its logged that a duplicate was attempted to be made
     if (student) {
 
         return student;
