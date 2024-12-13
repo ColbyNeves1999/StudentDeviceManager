@@ -3,26 +3,26 @@ import { google } from 'googleapis';
 import { addStudent } from './studentModel';
 import customLogger from '../utils/logging';
 
-const GOOGLEUSEREMAIL = process.env.GOOGLEUSEREMAIL;
-//This is necessary due to how the Private key is stored
-const GOOGLEUSERKEY= process.env.GOOGLEUSERKEY?.replace(/\\n/g, '\n');;
-const SHEETID = process.env.SHEETID;
-
-//Creates an authorized user to access the google sheet and grab student data
-const auth = new google.auth.JWT(
-
-    GOOGLEUSEREMAIL,
-    undefined,
-    GOOGLEUSERKEY,
-    ['https://www.googleapis.com/auth/spreadsheets.readonly']
-
-);
-
-//Triggers the sheets API to allow for access to google sheets
-const sheets = google.sheets({ version: 'v4', auth });
-
 //The function that actually pulls the student data from the google sheet
 async function studentDataPull(sheet: string): Promise<null> {
+
+    const GOOGLEUSEREMAIL = process.env.GOOGLEUSEREMAIL;
+    //This is necessary due to how the Private key is stored
+    const GOOGLEUSERKEY= process.env.GOOGLEUSERKEY?.replace(/\\n/g, '\n');;
+    const SHEETID = process.env.SHEETID;
+
+    //Creates an authorized user to access the google sheet and grab student data
+    const auth = new google.auth.JWT(
+
+        GOOGLEUSEREMAIL,
+        undefined,
+        GOOGLEUSERKEY,
+        ['https://www.googleapis.com/auth/spreadsheets.readonly']
+
+    );
+
+    //Triggers the sheets API to allow for access to google sheets
+    const sheets = google.sheets({ version: 'v4', auth });
 
     try{
 

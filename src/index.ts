@@ -7,9 +7,9 @@ import { scheduleJob } from 'node-schedule';
 import customLogger from './utils/logging';
 
 //Controller imports
-import { registerUser, logIn, adminStatusManagment, sessionRefresh } from './controllers/userController';
+import { registerUser, logIn, logOut, adminStatusManagment, sessionRefresh } from './controllers/userController';
 import { studentDeviceCheckout } from './controllers/studentController';
-import { toStudentDataPage } from './controllers/pageController';
+import { splashPageRedirect, toStudentDataPage } from './controllers/pageController';
 import { makeNote } from './controllers/noteController';
 
 //Model imports
@@ -28,7 +28,7 @@ app.use(
   session({
     store: new SQLiteStore({ db: 'sessions.sqlite' }),
     secret: COOKIE_SECRET,
-    cookie: { maxAge: 8 * 60 * 60 * 1000 }, // 8 hours
+    cookie: { maxAge: 105 * 60 * 60 * 1000 }, // 8 hours
     name: 'session',
     resave: false,
     saveUninitialized: false,
@@ -36,8 +36,12 @@ app.use(
 );
 
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: false }));
+
+//Primary spalsh page manager
+//Redirects the user based on whether they're logged in or not
+app.get('/', splashPageRedirect);
+
 app.use(express.static('public', { extensions: ['html'] }));
 app.set('view engine', 'ejs');
 ///////
@@ -85,12 +89,14 @@ scheduleJob('0 6,18 * * *', refresh);
 //Account Managment links
 //Logs the user in
 app.post('/login', logIn);
+//Logs the user out
+app.post('/logout', logOut);
 //Allows for registration of a new student
 app.post('/register', registerUser);
 //Allows for modification of admin status
 app.post('/adminStatus', adminStatusManagment);
 //Directs user to their homepage
-app.post('/homepage', sessionRefresh);
+app.get('/homepage', sessionRefresh);
 ///////////////////////////
 
 //Student Managment
@@ -115,8 +121,10 @@ app.post('/makeNote', makeNote);
 ///////////////////////////
 
 app.listen(PORT, () => {
+
   //When the application is started, the admin is initialized/verified
   firstAdminInitializer();
   console.log(`Listening at http://localhost:${PORT}`);
+  customLogger.log("success", "Website started successfully");
 
 });

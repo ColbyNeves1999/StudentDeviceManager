@@ -21,28 +21,28 @@ const customLevel = {
 winston.addColors(customLevel.colors);
 
 const fileRotateTransportCombined = new DailyRotateFile({
-    filename: 'combined-%DATE%.log',
+    filename: 'logs/combined-%DATE%.log',
     datePattern: 'DD-MM-YYYY',
     maxFiles: '10d',
 });
 
 const fileRotateTransportError = new DailyRotateFile({
     level: 'error',
-    filename: 'error-%DATE%.log',
+    filename: 'logs/error-%DATE%.log',
     datePattern: 'DD-MM-YYYY',
     maxFiles: '15d',
 });
 
 const fileRotateTransportWarning = new DailyRotateFile({
     level: 'warning',
-    filename: 'warning-%DATE%.log',
+    filename: 'logs/warning-%DATE%.log',
     datePattern: 'DD-MM-YYYY',
     maxFiles: '15d',
 });
 
 const fileRotateTransportAlert = new DailyRotateFile({
     level: 'alert',
-    filename: 'alert-%DATE%.log',
+    filename: 'logs/alert-%DATE%.log',
     datePattern: 'DD-MM-YYYY',
     maxFiles: '10d',
 });

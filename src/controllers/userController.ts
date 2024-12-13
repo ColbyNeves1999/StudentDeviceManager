@@ -61,6 +61,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
         //If the user doesn't exist, then the user is just returned to login
         res.redirect("/index");
         return;
+
     }
 
     //Grabs the hash of the user that was found
@@ -90,7 +91,7 @@ async function logIn(req: Request, res: Response): Promise<void> {
     if(req.session.isLoggedIn === true && req.session.authenticatedUser.email === user.email){
 
         //Renders the homepage of the user that is logged in
-        res.redirect('/homepage');
+        res.render("userHomepage", { user });
         return;
 
     }else{
@@ -102,6 +103,16 @@ async function logIn(req: Request, res: Response): Promise<void> {
     }
 
 }
+
+//Logs the user into the website
+async function logOut(req: Request, res: Response): Promise<void> {
+
+    await req.session.clearSession();
+
+    res.redirect('index.html');
+
+}
+
 
 //Refreshes the data for the user's current session
 async function sessionRefresh(req: Request, res: Response): Promise<void>{
@@ -137,4 +148,4 @@ async function adminStatusManagment(req: Request, res: Response): Promise<void> 
 
 }
 
-export { registerUser, logIn, adminStatusManagment, sessionRefresh };
+export { registerUser, logIn, logOut, adminStatusManagment, sessionRefresh };
