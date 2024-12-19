@@ -25,7 +25,7 @@ async function getStudentByName(name: string): Promise<Student | null> {
 async function getStudentByComputer(computerNumber: string): Promise<Student | null> {
     return await studentRepository.findOne({ relations: ['notes'], where: { computerNumber } });
 }
-
+//
 //Searches for a student using the previously declared functions and their resulting data
 async function getStudentVariety(searchValue: string): Promise<Student | null> {
 
