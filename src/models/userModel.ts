@@ -1,6 +1,13 @@
-import { AppDataSource } from '../dataSource';
+//Importing Entities
 import { User } from '../entities/User';
+
+//Importing Controller Functions
+
+//Importing Model Functions
+import { AppDataSource } from '../dataSource';
 import argon2 from 'argon2';
+import { initialGoogleEncryption } from './googleModel';
+import fs from 'fs';
 
 //Grabs admin data from .env
 const ADMIN_USER = process.env.ADMIN_USER;
@@ -46,6 +53,13 @@ async function addUser(email: string, passwordHash: string, username: string, ad
 
 //Initial admin creation
 async function firstAdminInitializer(): Promise<void> {
+
+    //Checks to make sure Google Cloud Project data exists
+    if(!fs.existsSync(process.env.ENCRYPDATA)){
+        console.log("WHERE");
+        await initialGoogleEncryption();
+    
+    }
 
     //Verifies that the admin doesn't already exist
     if(!(await getUserByEmail(ADMIN_EMAIL))){

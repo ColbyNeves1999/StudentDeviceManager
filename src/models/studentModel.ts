@@ -1,10 +1,14 @@
-import { AppDataSource } from '../dataSource';
+//Importing Entities
 import { Student } from '../entities/Student';
+const studentRepository = AppDataSource.getRepository(Student);
+
+//Importing Controller Functions
+
+//Importing Model Functions
 import { dataEncrypt } from './securityModel';
 import argon2 from 'argon2';
 import customLogger from '../utils/logging';
-
-const studentRepository = AppDataSource.getRepository(Student);
+import { AppDataSource } from '../dataSource';
 
 //Grabs Student Data by Email
 async function getStudentByEmail(email: string): Promise<Student | null> {

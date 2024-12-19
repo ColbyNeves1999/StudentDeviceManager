@@ -1,8 +1,12 @@
+//Importing Entities
+
+//Importing Controller Functions
+
+//Importing Model Functions
 import { Request, Response } from 'express';
 import { addNote } from '../models/noteModel';
 import { getStudentVariety } from '../models/studentModel';
 import { getUserByID } from '../models/userModel';
-
 import customLogger from '../utils/logging';
 
 async function makeNote(req: Request, res: Response): Promise<void> {

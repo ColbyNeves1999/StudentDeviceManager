@@ -1,3 +1,8 @@
+//Importing Entities
+
+//Importing Controller Functions
+
+//Importing Model Functions
 import { Request, Response } from 'express';
 import { getStudentVariety } from '../models/studentModel';
 

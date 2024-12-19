@@ -1,5 +1,9 @@
-import { Request, Response } from 'express';
+//Importing Entities
 
+//Importing Controller Functions
+
+//Importing Model Functions
+import { Request, Response } from 'express';
 //import { addNote } from '../models/noteModel';
 //import { setStudentDevice, getStudentVariety } from '../models/studentModel';
 //import { getUserByID } from '../models/userModel';

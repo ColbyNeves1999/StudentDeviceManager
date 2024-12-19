@@ -1,9 +1,11 @@
+//Importing Entities
+
+//Importing Controller Functions
+
+//Importing Model Functions
 import { Request, Response } from 'express';
 import argon2 from 'argon2';
-
 import customLogger from '../utils/logging';
-
-//Imported functions from models
 import { getUserByEmail, addUser, changeAdminStatus} from '../models/userModel';
 
 //Handles to registration of a new user(s)

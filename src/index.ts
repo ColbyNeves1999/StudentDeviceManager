@@ -1,3 +1,12 @@
+//Importing Entities
+
+//Importing Controller Functions
+import { registerUser, logIn, logOut, adminStatusManagment, sessionRefresh } from './controllers/userController';
+import { studentDeviceCheckout } from './controllers/studentController';
+import { splashPageRedirect, toStudentDataPage } from './controllers/pageController';
+import { makeNote } from './controllers/noteController';
+
+//Importing Model Functions
 import './config';
 import 'express-async-errors';
 import express, { Express } from 'express';
@@ -5,30 +14,21 @@ import session from 'express-session';
 import connectSqlite3 from 'connect-sqlite3';
 import { scheduleJob } from 'node-schedule';
 import customLogger from './utils/logging';
-
-//Controller imports
-import { registerUser, logIn, logOut, adminStatusManagment, sessionRefresh } from './controllers/userController';
-import { studentDeviceCheckout } from './controllers/studentController';
-import { splashPageRedirect, toStudentDataPage } from './controllers/pageController';
-import { makeNote } from './controllers/noteController';
-
-//Model imports
 import { firstAdminInitializer } from './models/userModel';
-import { studentDataPull } from './models/googleModel';
+import { studentDataPull, createSheetsClient } from './models/googleModel';
 
-
+//Session managment
+///////
 const app: Express = express();
 const { PORT, COOKIE_SECRET } = process.env;
 
 const SQLiteStore = connectSqlite3(session);
 
-//Session managment
-///////
 app.use(
   session({
     store: new SQLiteStore({ db: 'sessions.sqlite' }),
     secret: COOKIE_SECRET,
-    cookie: { maxAge: 105 * 60 * 60 * 1000 }, // 8 hours
+    cookie: { maxAge: 48 * 60 * 60 * 1000 }, // 48 hours
     name: 'session',
     resave: false,
     saveUninitialized: false,
@@ -123,7 +123,8 @@ app.post('/makeNote', makeNote);
 app.listen(PORT, () => {
 
   //When the application is started, the admin is initialized/verified
-  firstAdminInitializer();
+  //firstAdminInitializer();
+  createSheetsClient();
   console.log(`Listening at http://localhost:${PORT}`);
   customLogger.log("success", "Website started successfully");
 
