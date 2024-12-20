@@ -1,5 +1,13 @@
+//Controller Calls
+
+//Model Calls
 import crypto from 'crypto';
 
+//Entity Calls
+
+//Repository Calls
+
+//.env Calls
 const SECRETKEY = crypto.createHash('sha256').update(process.env.SECRETKEY).digest();
 const ECNRYPTIONMETHOD = process.env.ECNRYPTIONMETHOD;
 

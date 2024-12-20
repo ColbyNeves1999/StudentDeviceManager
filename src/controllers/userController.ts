@@ -1,10 +1,16 @@
+//Controller Calls
+
+//Model Calls
 import { Request, Response } from 'express';
 import argon2 from 'argon2';
-
 import customLogger from '../utils/logging';
-
-//Imported functions from models
 import { getUserByEmail, addUser, changeAdminStatus} from '../models/userModel';
+
+//Entity Calls
+
+//Repository Calls
+
+//.env Calls
 
 //Handles to registration of a new user(s)
 //The objective here is to allow for batch user creations if desired

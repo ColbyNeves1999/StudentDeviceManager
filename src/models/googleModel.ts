@@ -1,8 +1,15 @@
-import { google } from 'googleapis';
+//Controller Calls
 
+//Model Calls
+import { google } from 'googleapis';
 import { addStudent } from './studentModel';
 import customLogger from '../utils/logging';
 
+//Entity Calls
+
+//Repository Calls
+
+//.env Calls
 const GOOGLEUSEREMAIL = process.env.GOOGLEUSEREMAIL;
 //This is necessary due to how the Private key is stored
 const GOOGLEUSERKEY= process.env.GOOGLEUSERKEY?.replace(/\\n/g, '\n');;

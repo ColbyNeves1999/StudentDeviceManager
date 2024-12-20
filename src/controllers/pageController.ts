@@ -1,5 +1,14 @@
+//Controller Calls
+
+//Model Calls
 import { Request, Response } from 'express';
 import { getStudentVariety } from '../models/studentModel';
+
+//Entity Calls
+
+//Repository Calls
+
+//.env Calls
 
 async function splashPageRedirect(req: Request, res: Response): Promise<void> {
 

@@ -1,14 +1,19 @@
+//Controller Calls
+
+//Model Calls
 import { AppDataSource } from '../dataSource';
-import { User } from '../entities/User';
 import argon2 from 'argon2';
 
-//Grabs admin data from .env
+//Entity Calls
+import { User } from '../entities/User';
+
+//Repository calls
+const userRepository = AppDataSource.getRepository(User);
+
+//.env Calls
 const ADMIN_USER = process.env.ADMIN_USER;
 const ADMIN_PASS = process.env.ADMIN_PASS;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-
-//Grabs to repositories associated with users
-const userRepository = AppDataSource.getRepository(User);
 
 //Finds a user in the database using their email
 async function getUserByEmail(email: string): Promise<User | null> {

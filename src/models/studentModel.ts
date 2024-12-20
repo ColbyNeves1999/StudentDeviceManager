@@ -1,10 +1,18 @@
+//Controller Calls
+
+//Model Calls
 import { AppDataSource } from '../dataSource';
-import { Student } from '../entities/Student';
 import { dataEncrypt } from './securityModel';
 import argon2 from 'argon2';
 import customLogger from '../utils/logging';
 
+//Entity Calls
+import { Student } from '../entities/Student';
+
+//Repository calls
 const studentRepository = AppDataSource.getRepository(Student);
+
+//.env Calls
 
 //Grabs Student Data by Email
 async function getStudentByEmail(email: string): Promise<Student | null> {
