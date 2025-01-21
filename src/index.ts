@@ -16,7 +16,6 @@ import { makeNote } from './controllers/noteController';
 import { firstAdminInitializer } from './models/userModel';
 import { studentDataPull } from './models/googleModel';
 
-
 const app: Express = express();
 const { PORT, COOKIE_SECRET } = process.env;
 

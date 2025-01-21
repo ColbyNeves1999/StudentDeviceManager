@@ -3,6 +3,8 @@
 //Model Calls
 import { AppDataSource } from '../dataSource';
 import argon2 from 'argon2';
+import fs from 'fs';
+import { dataEncrypt } from './securityModel';
 
 //Entity Calls
 import { User } from '../entities/User';
@@ -60,6 +62,13 @@ async function firstAdminInitializer(): Promise<void> {
 
         //Adds the admin user to the database
         await addUser(ADMIN_EMAIL, passwordHash, ADMIN_USER, true);
+
+    }
+
+    if(!await fs.existsSync(process.env.ENCRYPDATA)){
+
+        await dataEncrypt(process.env.FILETOENCRYPT);
+        await fs.unlinkSync(process.env.FILETOENCRYPT);
 
     }
 

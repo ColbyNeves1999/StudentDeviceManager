@@ -82,15 +82,15 @@ async function addStudent(studentId: string, name: string, grade: string, email:
 
     // Create the new user object and saves data through hashing and encryption
     let newStudent = new Student();
-    newStudent.studentID = dataEncrypt(studentId);
+    newStudent.studentID = await dataEncrypt(studentId);
     newStudent.studentIDHash = sIDhash;
-    newStudent.name = dataEncrypt(name);
+    newStudent.name = await dataEncrypt(name);
     newStudent.nameHash = sNhash;
-    newStudent.grade = dataEncrypt(grade);
+    newStudent.grade = await dataEncrypt(grade);
     newStudent.gradeHash = sGhash;
-    newStudent.email = dataEncrypt(email);
+    newStudent.email = await dataEncrypt(email);
     newStudent.emailHash = sEhash;
-
+    console.log("did I get here?");
     newStudent = await studentRepository.save(newStudent);
 
     //Returns the new student's object
